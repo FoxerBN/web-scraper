@@ -1,10 +1,19 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from app.api.v1 import house_routes
+from app.service.house_scraper import fetch_house_data
 
 app = FastAPI()
 
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
+templates = Jinja2Templates(directory="templates")
+
+@app.get("/", response_class=HTMLResponse)
+async def read_root(request: Request, page: int = 1):
+    houses = fetch_house_data(page)
+    return templates.TemplateResponse(
+        "houses.html",
+        {"request": request, "houses": houses, "page": page}
+    )
 
 app.include_router(house_routes.router, prefix="/api/v1")
