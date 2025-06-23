@@ -3,14 +3,10 @@ import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles
-
-from app.api.v1 import house_routes
 from app.service.house_scraper import fetch_house_data
 
 app = FastAPI()
 
-# Templates
 templates = Jinja2Templates(directory="templates")
 
 
@@ -26,7 +22,6 @@ async def read_root(request: Request, page: int = 1):
 async def ping():
     return {"message": "pong"}
 
-# Uvicorn spúšťa Railway cez Procfile (odporúčané)
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run("main:app", host="0.0.0.0", port=port)

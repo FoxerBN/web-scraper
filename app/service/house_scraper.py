@@ -10,7 +10,6 @@ headers = {
 }
 
 def fetch_house_data(page: int = 1) -> list[House]:
-    # Calculate offset for pagination
     offset = "" if page == 1 else f"/{(page-1)*20}"
     url = (
         f"{BASE_URL}{offset}/?hledat=&hlokalita=01001&humkreis=30&cenaod=&cenado=120000&order="
